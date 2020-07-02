@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
-import { headers } from "../../constants/common";
+import { url, headers } from "../../constants/Utils";
 
 class Login extends Component {
   state = {
@@ -10,22 +10,22 @@ class Login extends Component {
     form: {
       email: "",
       password: "",
-      redirect: false,
     },
+    redirect: false,
   };
   loginSubmit = (event) => {
     event.preventDefault(); // prevent form auto-reloads
     axios({
       method: "post",
-      url: "https://bright-events-api.herokuapp.com/api/v2/auth/login",
+      url: url["base-url"] + "/api/v1/auth/login",
       headers,
       data: this.state.form,
     })
       .then((resp) => {
         toast.success(resp.data.message);
-        localStorage.setItem("Token", resp.data.access_token);
-        if (resp.data.access_token) {
-          this.props.history.replace("/myEvents");
+        if (resp.data.token) {
+          localStorage.setItem("Token", resp.data.token);
+          this.props.history.replace("/dashboard");
         } else {
           this.setState({ redirect: false });
         }
@@ -42,9 +42,9 @@ class Login extends Component {
   };
   render() {
     const { form } = this.state;
-    if (localStorage.getItem("Token")) {
-      return <Redirect to={"/myEvents"} />;
-    }
+    // if (localStorage.getItem("Token")) {
+    //   return <Redirect to={"/myEvents"} />;
+    // }
     return (
       <div className="container page-content" style={{ marginTop: 100 }}>
         <ToastContainer
@@ -65,7 +65,6 @@ class Login extends Component {
               </div>
               <hr />
             </div>
-            {/* panel-heading */}
             <div style={{ paddingTop: 30 }} className="panel-body">
               <form
                 id="loginform"

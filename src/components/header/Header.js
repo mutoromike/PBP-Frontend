@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Redirect, withRouter } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import axios from "axios";
-import { headers, url } from "../../constants/common";
-import LoggedInMenu from "./../Login/LoggedInMenu";
-import VisitorMenu from "./../Login/VisitorMenu";
+import { headers } from "../../constants/Utils";
+import LoggedInMenu from "./../login/LoggedInMenu";
+import VisitorMenu from "./../login/VisitorMenu";
+import 'react-toastify/dist/ReactToastify.css';
 
 class Header extends Component {
   state = {
@@ -13,19 +13,10 @@ class Header extends Component {
   };
   logoutUser = (event) => {
     const head = { ...headers, Authorization: localStorage.getItem("Token") };
-    axios({
-      method: "post",
-      url: url["base-url"] + "/api/v1/auth/logout",
-      headers: head,
-    })
-      .then((resp) => {
-        toast.success(resp.data.message);
-        localStorage.removeItem("Token");
-        this.props.history.push("/login");
-      })
-      .catch((err) => {
-        toast.error("An error occured!");
-      });
+
+    localStorage.removeItem("Token");
+    this.props.history.push("/login");
+    toast.success("Successfully logged out");
   };
 
   render() {

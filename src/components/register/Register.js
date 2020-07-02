@@ -2,33 +2,39 @@ import React, { Component } from "react";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { headers, url } from "../../constants/common";
+import { url, headers } from "../../constants/Utils";
 
 class Register extends Component {
   state = {
     message: "",
     form: {
-      username: "",
+      first_name: "",
+      last_name: "",
       email: "",
       password: "",
-      cpassword: "",
     },
+    redirect: false,
   };
-  // Method to get user inputs, setting new state and making
-  // the register call to the API
+  
   registerSubmit = (event) => {
-    event.preventDefault(); // prevent form auto-reloads
+    event.preventDefault();
     axios({
       method: "post",
-      url: url["base-url"] + "api/v1/auth/register",
+      url: url["base-url"] + "/api/v1/auth/register",
       headers,
       data: this.state.form,
     })
       .then((resp) => {
         toast.success(resp.data.message);
-        this.props.history.push("/login");
+        if (resp.data.token) {
+          localStorage.setItem("Token", resp.data.token);
+          this.props.history.push("/dashboard");
+        } else {
+          this.setState({ redirect: false });
+        }
       })
       .catch((err) => {
+        console.log(err);
         toast.error(err.response.data.message);
       });
   };
@@ -60,7 +66,6 @@ class Register extends Component {
               </div>
               <hr />
             </div>
-            {/* panel-heading */}
             <div className="panel panel-body">
               <div className="row">
                 <div className="col-lg-12">
@@ -78,7 +83,7 @@ class Register extends Component {
                         name="first_name"
                         onChange={this.onChange}
                         className="form-control"
-                        placeholder="First Name"
+                        placeholder="First name"
                         required
                       />
                     </div>
@@ -91,7 +96,7 @@ class Register extends Component {
                         name="last_name"
                         onChange={this.onChange}
                         className="form-control"
-                        placeholder="Last Name"
+                        placeholder="Last name"
                         required
                       />
                     </div>
@@ -118,19 +123,6 @@ class Register extends Component {
                         name="password"
                         onChange={this.onChange}
                         placeholder="Password"
-                        required
-                      />
-                    </div>
-                    <div className="input-group" style={{ marginBottom: 16 }}>
-                      <span className="input-group-addon">
-                        <i className="glyphicon glyphicon-lock"></i>
-                      </span>
-                      <input
-                        type="password"
-                        className="form-control"
-                        name="cpassword"
-                        onChange={this.onChange}
-                        placeholder="Confirm Password"
                         required
                       />
                     </div>

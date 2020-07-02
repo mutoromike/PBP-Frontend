@@ -9,12 +9,7 @@ const LoggedInMenu = ({ onLogout }) => (
       </Link>
     </li>
     <li>
-      <Link to="/events" className="page-scroll">
-        Business
-      </Link>
-    </li>
-    <li>
-      <Link to="/myEvents" className="page-scroll">
+      <Link to="/dashboard" className="page-scroll">
         Dashboard
       </Link>
     </li>
@@ -28,7 +23,7 @@ const LoggedInMenu = ({ onLogout }) => (
       </Link>
       <ul className="dropdown-menu">
         <li>
-          <Link to="myEvents">Dashboard</Link>
+          <Link to="dashboard">Dashboard</Link>
         </li>
         <li>
           <Link to="profile">Profile</Link>

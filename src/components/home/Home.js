@@ -9,13 +9,13 @@ class Home extends Component {
             <header>
                 <div className="header-content">
                     <div className="header-content-inner">
-                        <h1 className="heading"> Business Manager </h1>
+                        <h1 className="heading"> Bright Events </h1>
                         <hr />
-                        <p>Platform to manage your business in one place.
+                        <p>Platform to create and manage different types of events.
                         <br />
-                            <p>Welcome</p>
+                            <Link to="/events">RSVP </Link>to events.
                         </p>
-                        <p><Link to="register"> Register </Link> to join us today.
+                        <p>Organizing for events? <Link to="register"> Register </Link> today.
                         </p>
 
                     </div>
