@@ -60,7 +60,7 @@ class Register extends Component {
               <div className="row">
                 <div className="col-xs-12">
                   <a className="active" id="register-form-link">
-                    Register
+                    Sign Up
                   </a>
                 </div>
               </div>

@@ -4,7 +4,7 @@ import "./App.css";
 import Header from "./components/header/Header";
 import Register from "./components/register/Register";
 import Login from "./components/login/Login";
-import Dashboard from './components/dashboard/Dashboard'
+import Business from './components/business/Business'
 import Home from "./components/home/Home";
 import createHistory from "history/createBrowserHistory";
 
@@ -19,7 +19,7 @@ function App() {
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
           <Route path="/home" component={Home} />
-          <Route path="/dashboard" component={Dashboard} />
+          <Route path="/business" component={Business} />
         </Switch>
       </div>
     </Router>
