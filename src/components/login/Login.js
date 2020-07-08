@@ -25,7 +25,7 @@ class Login extends Component {
         toast.success(resp.data.message);
         if (resp.data.token) {
           localStorage.setItem("Token", resp.data.token);
-          this.props.history.replace("/dashboard");
+          this.props.history.replace("/business");
         } else {
           this.setState({ redirect: false });
         }
@@ -42,9 +42,6 @@ class Login extends Component {
   };
   render() {
     const { form } = this.state;
-    // if (localStorage.getItem("Token")) {
-    //   return <Redirect to={"/myEvents"} />;
-    // }
     return (
       <div className="container page-content" style={{ marginTop: 100 }}>
         <ToastContainer
