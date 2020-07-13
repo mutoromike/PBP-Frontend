@@ -1,57 +1,91 @@
 import React, { Component } from "react";
 import { ToastContainer, toast } from "react-toastify";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
+import getLabels from "react-select-country-list";
 import axios from "axios";
 import MediaQuery from "react-responsive";
 import { Redirect } from "react-router-dom";
 import { url, headers } from "../../constants/Utils";
-// import Business from "./../business/Business";
+import BusinessView from "./../business-view/BusinessView";
 
+const animatedComponents = makeAnimated();
 class Business extends Component {
   constructor(props) {
     super(props);
     this.state = {
       message: "",
       redirect: false,
-      businesses: [],
+      business: [],
+      options: [],
+      countries: [],
       form: {
         name: "",
         address: "",
         country: "",
-        countries: "",
         abbreviated_name: "",
         revenue: "",
         accounting_software: "",
         entity: "",
       },
     };
+    this.getBusiness = this.getBusiness.bind(this);
   }
   createBusiness = (event) => {
     const header = { ...headers, Authorization: localStorage.getItem("Token") };
+    const countries = { countries: this.state.countries.join() };
     event.preventDefault();
     axios({
       method: "post",
       url: url["base-url"] + "/api/v1/business",
       headers: header,
-      data: this.state.form,
+      data: { ...this.state.form, ...countries },
     })
       .then((resp) => {
         toast.success(resp.data.message);
-        // this.getBusiness();
+        this.getBusiness();
       })
       .catch((err) => {
         toast.error(err.response.data.message);
       });
   };
+  getBusiness = () => {
+    const head = { ...headers, Authorization: localStorage.getItem("Token") };
+    axios({
+      method: "get",
+      url: url["base-url"] + "/api/v1/business",
+      headers: head,
+    })
+      .then((resp) => {
+        this.setState({
+          business: Object.values(resp.data),
+        });
+      })
+      .catch((err) => {
+        toast.error(err.message);
+      });
+  };
 
+  changeHandler = (value) => {
+    this.setState((state) => {
+      return {
+        ...state,
+        countries: value,
+      };
+    });
+  };
   onChange = (event) => {
     const myState = this.state;
     myState.form[event.target.name] = event.target.value;
     this.setState(myState);
   };
-  // Get all user events after the page has loaded
-  //   componentWillMount() {
-  //     this.getBusinesses();
-  //   }
+  componentWillMount() {
+    this.getBusiness();
+    const data = getLabels();
+    const myState = this.state;
+    myState.options = Object.values(data.valueMap);
+    this.setState(myState);
+  }
 
   render() {
     const { form } = this.state;
@@ -74,14 +108,14 @@ class Business extends Component {
                   return (
                     <div className="row">
                       <div className="col-md-8">
-                        {/* {this.state.events.map((event) => (
-                          <Event
-                            key={event.id}
-                            event={event}
+                        {this.state.business.map((business) => (
+                          <BusinessView
+                            key={business.id}
+                            business={business}
                             onDelete={this.deleteEvent}
-                            onGet={this.getEvent}
+                            onGet={this.getBusiness}
                           />
-                        ))} */}
+                        ))}
                       </div>
                       <div className="col-md-4">
                         <button
@@ -138,6 +172,7 @@ class Business extends Component {
                                         required
                                       />
                                     </div>
+
                                     <br />
                                     <div>
                                       <input
@@ -173,14 +208,17 @@ class Business extends Component {
                                     </div>
                                     <br />
                                     <div>
-                                      <input
-                                        type="text"
-                                        name="countries"
-                                        className="form-control"
-                                        onChange={this.onChange}
-                                        placeholder="Countries of Operation"
-                                        required
-                                      ></input>
+                                      <Select
+                                        closeMenuOnSelect={false}
+                                        options={this.state.options}
+                                        value={this.state.form.countries}
+                                        isMulti
+                                        placeholder={"Countries of Operation"}
+                                        onChange={this.changeHandler}
+                                        getOptionLabel={(option) => option}
+                                        getOptionValue={(option) => option}
+                                        components={animatedComponents}
+                                      />
                                     </div>
                                     <br />
                                     <div>
@@ -340,14 +378,17 @@ class Business extends Component {
                                   </div>
                                   <br />
                                   <div>
-                                    <input
-                                      type="text"
-                                      name="countries"
-                                      className="form-control"
-                                      onChange={this.onChange}
-                                      placeholder="Countries of Operation"
-                                      required
-                                    ></input>
+                                    <Select
+                                      closeMenuOnSelect={false}
+                                      options={this.state.options}
+                                      value={this.state.form.countries}
+                                      isMulti
+                                      placeholder={"Countries of Operation"}
+                                      onChange={this.changeHandler}
+                                      getOptionLabel={(option) => option}
+                                      getOptionValue={(option) => option}
+                                      components={animatedComponents}
+                                    />
                                   </div>
                                   <br />
                                   <div>
@@ -414,14 +455,14 @@ class Business extends Component {
                       {/* panel success */}
                     </div>
                     <div className="col-md-8">
-                      {/* {this.state.events.map((event) => (
-                        <Event
-                          key={event.id}
-                          event={event}
+                      {this.state.business.map((business) => (
+                        <BusinessView
+                          key={business.id}
+                          business={business}
                           onDelete={this.deleteEvent}
-                          onGet={this.getEvent}
+                          onGet={this.getBusiness}
                         />
-                      ))} */}
+                      ))}
                     </div>
                   </div>
                 );
