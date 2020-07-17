@@ -66,7 +66,6 @@ const Dashboard = () => {
         newestOnTop={true}
         autoClose={3000}
       />
-      {/* {getBusiness()} */}
       <div className="col-md-12">
         <table className="table" style={{ border: "none" }}>
           <tbody>
