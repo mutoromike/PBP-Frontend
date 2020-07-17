@@ -1,1 +1,1 @@
-web: bin/boot
+web: build/index.html
