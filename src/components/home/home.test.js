@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import App from './App';
+import { shallow } from 'enzyme';
+import Home from './Home';
 
-describe('App', () => {
-  it('renders without crashing', () => {
+describe('Home', () => {
+  it('component render without crashing', () => {
     const div = document.createElement('div');
     ReactDOM.render(<BrowserRouter>
-      < App />
-      </BrowserRouter>, div);
+    < Home />
+    </BrowserRouter>, div);
     ReactDOM.unmountComponentAtNode(div);
   });
 });
