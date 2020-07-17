@@ -38,20 +38,27 @@ const Dashboard = () => {
           );
         })
         .catch((err) => {
-          console.log(err);
-          toast.error(err.message);
+          toast.error("You have no analytics yet!");
         });
     }
 
     getAnalytics();
   }, []);
-  function getLargest(val){
-    const c = val[4]
-    let d = "None"
-    if (c){
-      d = c[0]
+  function getLargest(val) {
+    const c = val[4];
+    let d = "None";
+    if (c) {
+      d = c[0];
     }
-    return d
+    return d;
+  }
+  function getData(data) {
+    let val = [["None", 0]];
+    if (data==[]) {
+      val = data
+    }
+    console.log(val)
+    return val;
   }
   return (
     <div className="container page-content" style={{ marginTop: 100 }}>
@@ -102,7 +109,7 @@ const Dashboard = () => {
                     height={"400px"}
                     chartType="ColumnChart"
                     loader={<div>Loading Chart</div>}
-                    data={[["", "Value Range"], ...value]}
+                    data={[["", "Value Range"], ...getData(value)]}
                     options={{
                       title: "Top 5 items interms of Value",
                       chartArea: { width: "50%" },
@@ -126,7 +133,7 @@ const Dashboard = () => {
                     height={"400px"}
                     chartType="ColumnChart"
                     loader={<div>Loading Chart</div>}
-                    data={[["", "Quantity Range"], ...quantity]}
+                    data={[["", "Quantity Range"], ...getData(quantity)]}
                     options={{
                       title: "Top 5 items interms of quantity",
                       chartArea: { width: "50%" },

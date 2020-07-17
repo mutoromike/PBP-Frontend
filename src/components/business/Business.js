@@ -88,7 +88,7 @@ class Business extends Component {
         this.props.history.replace("/dashboard");
       })
       .catch((err) => {
-        toast.error("Upload CSV file, one with correct data and headers");
+        toast.error("Create Business then Upload CSV file, one with correct data and headers");
       });
   };
   changeHandler = (value) => {
