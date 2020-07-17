@@ -25,5 +25,5 @@ export const fileHeaders = {
 };
 
 export const url = {
-  "base-url": "http://127.0.0.1:5000",
+  "base-url": "http://pbp-backend.herokuapp.com",
 };

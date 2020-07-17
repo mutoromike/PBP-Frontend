@@ -79,7 +79,7 @@ class Business extends Component {
     if (this.state.file) {
       formData.append("file", this.state.file, this.state.file.name);
     } else {
-      toast.error("Please attach a file!")
+      toast.error("Please attach a file!");
     }
     const urls = url["base-url"] + "/api/v1/data-upload";
     post(urls, formData, header)
@@ -88,7 +88,9 @@ class Business extends Component {
         this.props.history.replace("/dashboard");
       })
       .catch((err) => {
-        toast.error("Create Business then Upload CSV file, one with correct data and headers");
+        toast.error(
+          "Create Business then Upload CSV file, one with correct data and headers"
+        );
       });
   };
   changeHandler = (value) => {
