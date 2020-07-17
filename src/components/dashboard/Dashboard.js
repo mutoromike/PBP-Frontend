@@ -57,7 +57,6 @@ const Dashboard = () => {
     if (data==[]) {
       val = data
     }
-    console.log(val)
     return val;
   }
   return (
