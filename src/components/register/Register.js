@@ -28,7 +28,7 @@ class Register extends Component {
         toast.success(resp.data.message);
         if (resp.data.token) {
           localStorage.setItem("Token", resp.data.token);
-          this.props.history.push("/dashboard");
+          this.props.history.push("/business");
         } else {
           this.setState({ redirect: false });
         }
