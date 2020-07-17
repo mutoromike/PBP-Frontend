@@ -3,10 +3,10 @@ import { ToastContainer, toast } from "react-toastify";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import getLabels from "react-select-country-list";
-import axios from "axios";
+import axios, { post } from "axios";
 import MediaQuery from "react-responsive";
 import { Redirect } from "react-router-dom";
-import { url, headers } from "../../constants/Utils";
+import { url, headers, fileHeaders } from "../../constants/Utils";
 import BusinessView from "./../business-view/BusinessView";
 
 const animatedComponents = makeAnimated();
@@ -18,6 +18,7 @@ class Business extends Component {
       redirect: false,
       business: [],
       options: [],
+      file: null,
       countries: [],
       form: {
         name: "",
@@ -30,6 +31,8 @@ class Business extends Component {
       },
     };
     this.getBusiness = this.getBusiness.bind(this);
+    this.onFileUpload = this.onFileUpload.bind(this);
+    this.onFileChange = this.onFileChange.bind(this);
   }
   createBusiness = (event) => {
     const header = { ...headers, Authorization: localStorage.getItem("Token") };
@@ -65,7 +68,31 @@ class Business extends Component {
         toast.error(err.message);
       });
   };
+  onFileChange = (e) => {
+    this.setState({ file: e.target.files[0] });
+  };
 
+  onFileUpload = (e) => {
+    e.preventDefault();
+    const header = { ...fileHeaders };
+    const formData = new FormData();
+    if (this.state.file) {
+      formData.append("file", this.state.file, this.state.file.name);
+    } else {
+      toast.error("Please attach a file!");
+    }
+    const urls = url["base-url"] + "/api/v1/data-upload";
+    post(urls, formData, header)
+      .then((resp) => {
+        toast.success(resp.data.message);
+        this.props.history.replace("/dashboard");
+      })
+      .catch((err) => {
+        toast.error(
+          "Create Business then Upload CSV file, one with correct data and headers"
+        );
+      });
+  };
   changeHandler = (value) => {
     this.setState((state) => {
       return {
@@ -126,7 +153,19 @@ class Business extends Component {
                         >
                           Create New Business
                         </button>
-
+                        <div>
+                          &nbsp;&nbsp;
+                          <h4>Upload transactions file:</h4>
+                          <input type="file" onChange={this.onFileChange} />
+                          <br />
+                          <button
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={this.onFileUpload}
+                          >
+                            Upload data file
+                          </button>
+                        </div>
                         {/* The modal  */}
                         <div
                           className="modal fade"
@@ -297,7 +336,19 @@ class Business extends Component {
                       >
                         Create New Business
                       </button>
-
+                      <div>
+                        &nbsp;&nbsp;
+                        <h4>Upload transactions file:</h4>
+                        <input type="file" onChange={this.onFileChange} />
+                        <br />
+                        <button
+                          type="button"
+                          className="btn btn-primary"
+                          onClick={this.onFileUpload}
+                        >
+                          Upload data file
+                        </button>
+                      </div>
                       {/* The modal  */}
                       <div
                         className="modal fade"

@@ -37,6 +37,7 @@ class BusinessView extends Component {
     })
       .then((resp) => {
         toast.success(resp.data.message);
+        this.props.onGet();
       })
       .catch((err) => {
         toast.error(err.response.data.message);

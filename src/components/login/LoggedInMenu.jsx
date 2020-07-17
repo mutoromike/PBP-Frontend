@@ -9,6 +9,9 @@ const LoggedInMenu = ({ onLogout }) => (
       </Link>
     </li>
     <li>
+      <Link to="dashboard">Dashboard</Link>
+    </li>
+    <li>
       <Link to="/business" className="page-scroll">
         Business
       </Link>
@@ -22,11 +25,8 @@ const LoggedInMenu = ({ onLogout }) => (
         <i className="glyphicon glyphicon-user"></i>
       </Link>
       <ul className="dropdown-menu">
-        {/* <li>
-          <Link to="dashboard">Dashboard</Link>
-        </li> */}
         <li>
-          <Link to="profile">Profile</Link>
+          <Link to="/dashboard">Dashboard</Link>
         </li>
         <li>
           <a onClick={() => onLogout()}>Logout</a>

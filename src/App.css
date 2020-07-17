@@ -241,6 +241,10 @@ header .header-content .header-content-inner p {
   }
 }
 
+tableData {
+  border: none;
+}
+
 footer {
   position: absolute;
   left: 0;
