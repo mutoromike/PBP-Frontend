@@ -3,7 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import getLabels from "react-select-country-list";
-import axios, { post } from "axios";
+import axios from "axios";
 import MediaQuery from "react-responsive";
 import { Redirect } from "react-router-dom";
 import { url, headers, fileHeaders } from "../../constants/Utils";
@@ -53,11 +53,12 @@ class Business extends Component {
       });
   };
   getBusiness = () => {
-    const head = { ...headers, Authorization: localStorage.getItem("Token") };
+    const head = { ...headers };
+    console.log(head.headers)
     axios({
       method: "get",
       url: url["base-url"] + "/api/v1/business",
-      headers: head,
+      headers: head.headers,
     })
       .then((resp) => {
         this.setState({
@@ -81,8 +82,12 @@ class Business extends Component {
     } else {
       toast.error("Please attach a file!");
     }
-    const urls = url["base-url"] + "/api/v1/data-upload";
-    post(urls, formData, header)
+    axios({
+      method: "post",
+      url: url["base-url"] + "/api/v1/data-upload/",
+      headers: header.headers,
+      data: formData
+    })
       .then((resp) => {
         toast.success(resp.data.message);
         this.props.history.replace("/dashboard");
@@ -161,7 +166,7 @@ class Business extends Component {
                           <button
                             type="button"
                             className="btn btn-primary"
-                            onClick={this.onFileUpload}
+                            onClick={(e) => this.onFileUpload(e)}
                           >
                             Upload data file
                           </button>
@@ -344,7 +349,7 @@ class Business extends Component {
                         <button
                           type="button"
                           className="btn btn-primary"
-                          onClick={this.onFileUpload}
+                          onClick={(e) => this.onFileUpload(e)}
                         >
                           Upload data file
                         </button>
